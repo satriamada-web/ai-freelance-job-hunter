@@ -107,10 +107,10 @@ def assess_risk(job):
     """
     text = (job.get("title", "") + " " + job.get("description", "")).lower()
     checks = [
-        ("Meminta biaya untuk melamar atau diterima", r"\\b(pay|send|transfer)\\b.{0,50}\\b(application|registration|training|processing|recruitment) fee\\b|\\b(application|registration|training|processing) fee\\b.{0,50}\\b(required|must pay|pay)\\b"),
-        ("Meminta pembayaran deposit atau uang jaminan", r"\\b(deposit|security fee|upfront payment)\\b"),
-        ("Meminta kata sandi atau OTP", r"\\b(password|one.time password|\\botp\\b|verification code)\\b.{0,50}\\b(send|share|provide|tell us)\\b|\\b(send|share|provide|tell us)\\b.{0,50}\\b(password|\\botp\\b|verification code)\\b"),
-        ("Meminta transfer atau pembayaran dengan kripto", r"\\b(pay|payment|transfer)\\b.{0,50}\\b(bitcoin|crypto|cryptocurrency|gift card)\\b|\\b(bitcoin|crypto|cryptocurrency|gift card)\\b.{0,50}\\b(pay|payment|transfer)\\b"),
+        ("Meminta biaya untuk melamar atau diterima", r"\b(pay|send|transfer)\b.{0,50}\b(application|registration|training|processing|recruitment) fee\b|\b(application|registration|training|processing) fee\b.{0,50}\b(required|must pay|pay)\b"),
+        ("Meminta pembayaran deposit atau uang jaminan", r"\b(deposit|security fee|upfront payment)\b"),
+        ("Meminta kata sandi atau OTP", r"\b(password|one.time password|\botp\b|verification code)\b.{0,50}\b(send|share|provide|tell us)\b|\b(send|share|provide|tell us)\b.{0,50}\b(password|\botp\b|verification code)\b"),
+        ("Meminta transfer atau pembayaran dengan kripto", r"\b(pay|payment|transfer)\b.{0,50}\b(bitcoin|crypto|cryptocurrency|gift card)\b|\b(bitcoin|crypto|cryptocurrency|gift card)\b.{0,50}\b(pay|payment|transfer)\b"),
     ]
     flags = [label for label, pattern in checks if re.search(pattern, text)]
     return {
