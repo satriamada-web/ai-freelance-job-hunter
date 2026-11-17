@@ -2,11 +2,14 @@
   "sources": [
     {
       "name": "We Work Remotely",
+      "type": "rss",
       "url": "https://weworkremotely.com/remote-jobs.rss"
     },
     {
-      "name": "Remote OK",
-      "url": "https://remoteok.com/remote-jobs.rss"
+      "name": "Himalayas",
+      "type": "himalayas",
+      "url": "https://himalayas.app/jobs/api",
+      "pages": 5
     }
   ],
   "max_jobs": 500,
