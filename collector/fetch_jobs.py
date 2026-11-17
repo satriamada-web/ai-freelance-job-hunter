@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config/settings.json").read_text(encoding="utf-8"))
-FIELDS = ["id","title","company","location","published","source","url","apply_url","description","salary","employment_type","eligibility","fit_score","difficulty","android_feasibility","reasons","collected_at"]
+FIELDS = ["id","title","company","location","published","source","url","apply_url","description","salary","employment_type","eligibility","fit_score","difficulty","android_feasibility","reasons","verification_status","risk_level","risk_flags","collected_at"]
 
 def clean(s):
     return re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", unescape(str(s or "")))).strip()
@@ -101,6 +101,24 @@ def assess(job):
     if "Tidak menerima Indonesia" in elig: difficulty="Tidak cocok lokasi"
     return score,difficulty,android,reasons[:8]
 
+def assess_risk(job):
+    """
+    Heuristic warning only. It cannot prove a job is legitimate or fraudulent.
+    """
+    text = (job.get("title", "") + " " + job.get("description", "")).lower()
+    checks = [
+        ("Meminta biaya untuk melamar atau diterima", r"\\b(pay|send|transfer)\\b.{0,50}\\b(application|registration|training|processing|recruitment) fee\\b|\\b(application|registration|training|processing) fee\\b.{0,50}\\b(required|must pay|pay)\\b"),
+        ("Meminta pembayaran deposit atau uang jaminan", r"\\b(deposit|security fee|upfront payment)\\b"),
+        ("Meminta kata sandi atau OTP", r"\\b(password|one.time password|\\botp\\b|verification code)\\b.{0,50}\\b(send|share|provide|tell us)\\b|\\b(send|share|provide|tell us)\\b.{0,50}\\b(password|\\botp\\b|verification code)\\b"),
+        ("Meminta transfer atau pembayaran dengan kripto", r"\\b(pay|payment|transfer)\\b.{0,50}\\b(bitcoin|crypto|cryptocurrency|gift card)\\b|\\b(bitcoin|crypto|cryptocurrency|gift card)\\b.{0,50}\\b(pay|payment|transfer)\\b"),
+    ]
+    flags = [label for label, pattern in checks if re.search(pattern, text)]
+    return {
+        "verification_status": "Perlu verifikasi manual",
+        "risk_level": "Perlu perhatian" if flags else "Tidak ada tanda otomatis yang terdeteksi",
+        "risk_flags": flags
+    }
+
 def main():
     jobs, errors = [], []
     for src in CFG["sources"]:
@@ -115,7 +133,7 @@ def main():
         if key and key not in seen:
             seen.add(key)
             score,difficulty,android,reasons=assess(j)
-            j.update({"fit_score":score,"difficulty":difficulty,"android_feasibility":android,"reasons":reasons})
+            j.update({"fit_score":score,"difficulty":difficulty,"android_feasibility":android,"reasons":reasons,**assess_risk(j)})
             unique.append(j)
     unique.sort(key=lambda x:(x["fit_score"],x["published"]),reverse=True)
     unique=unique[:int(CFG.get("max_jobs",500))]
