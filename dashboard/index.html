@@ -1,6 +1,48 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>Remote Job Hunter</title><link rel="stylesheet" href="style.css"></head>
-<body><header><main><p class="eyebrow">OPEN-SOURCE JOB DISCOVERY</p><h1>Remote Job Hunter</h1><p>Temukan lowongan remote. Periksa kelayakan. Lamar dengan aman.</p></main></header>
-<main><section class="stats"><div><b id="count">—</b><span>lowongan</span></div><div><b id="updated">—</b><span>pembaruan terakhir</span></div></section>
-<section class="filters"><label for="search">Cari posisi atau kata kunci</label><input id="search" placeholder="Contoh: data entry, writing, design"><div class="filters2"><select id="source"><option value="">Semua sumber</option></select><select id="status"><option value="all">Semua status</option><option value="new">Belum ditandai</option><option value="saved">Disimpan</option><option value="applied">Sudah dilamar</option><option value="skip">Dilewati</option></select></div><small>Status tersimpan di browser/perangkat ini.</small></section>
-<p id="message">Memuat lowongan…</p><section id="jobs"></section><footer>Remote tidak selalu berarti bisa dari seluruh dunia. Periksa negara yang memenuhi syarat, bayaran, dan persyaratan di situs asli.</footer></main><script src="app.js"></script></body></html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Dashboard pencarian lowongan remote dengan filter kecocokan dan pelacakan lamaran.">
+<title>Remote Job Hunter</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><main>
+<p class="eyebrow">OPEN-SOURCE JOB DISCOVERY</p>
+<h1>Remote Job Hunter</h1>
+<p class="lead">Cari peluang kerja remote, periksa kecocokan, dan lacak lamaranmu.</p>
+<div class="header-note">Gunakan skor sebagai penyaring awal, bukan jaminan diterima.</div>
+</main></header>
+<main class="content">
+<section class="stats" aria-label="Ringkasan lowongan">
+<div><b id="count">—</b><span>lowongan tersedia</span></div>
+<div><b id="updated">—</b><span>data diperbarui</span></div>
+<div><b id="savedCount">0</b><span>disimpan</span></div>
+</section>
+<section class="filters">
+<h2>Filter lowongan</h2>
+<label for="search">Kata kunci posisi</label>
+<input id="search" type="search" placeholder="Misalnya: data entry, virtual assistant">
+<div class="filters2">
+<div><label for="source">Sumber</label><select id="source"><option value="">Semua sumber</option></select></div>
+<div><label for="status">Status lamaran</label><select id="status"><option value="all">Semua status</option><option value="new">Belum ditandai</option><option value="saved">Disimpan</option><option value="applied">Sudah dilamar</option><option value="skip">Dilewati</option></select></div>
+</div>
+<div class="filters2">
+<div><label for="score">Skor minimum</label><select id="score"><option value="0">Semua skor</option><option value="40">40+</option><option value="60">60+</option><option value="75">75+</option><option value="85">85+</option></select></div>
+<div><label for="device">Kelayakan Android</label><select id="device"><option value="all">Semua</option><option value="likely">Lebih memungkinkan</option><option value="unknown">Belum diketahui</option><option value="unlikely">Kemungkinan perlu laptop</option></select></div>
+</div>
+<p class="hint">Status disimpan di browser perangkat ini. Jika browser atau datanya dihapus, status bisa hilang.</p>
+</section>
+<div class="results-head"><h2>Daftar lowongan</h2><span id="resultCount"></span></div>
+<p id="message" role="status">Memuat lowongan…</p>
+<section id="jobs" aria-live="polite"></section>
+<footer>
+<p><strong>Catatan keamanan:</strong> Remote tidak selalu berarti menerima pelamar dari Indonesia. Buka situs asli, pastikan negara yang diterima, cek gaji dan persyaratan, serta jangan pernah membayar biaya pendaftaran atau memberikan kata sandi/OTP.</p>
+<p>Dashboard ini tidak mengirim lamaran otomatis. Semua keputusan dan pengiriman lamaran tetap kamu lakukan sendiri.</p>
+</footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
