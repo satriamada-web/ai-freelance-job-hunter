@@ -1,21 +1,25 @@
 # AI Freelance Job Hunter
 
-Open-source job discovery for remote/freelance work, designed for Android and near-zero budget.
+Open-source remote-job discovery for a near-zero budget and Android-first workflow.
 
-## First version
-- Collects public RSS feeds from We Work Remotely and Remote OK.
+## Current system
+- Collects public listings from We Work Remotely RSS and the Himalayas public JSON API.
 - Normalizes and deduplicates listings into JSON and CSV.
-- Provides a static dashboard with search and a device-local application tracker.
-- Does not auto-apply. Always verify eligibility for applicants in Indonesia on the original listing.
+- Scores each listing (0–100) using transparent keyword rules for beginner-friendly roles, seniority signals, Indonesia location restrictions, and likely device needs.
+- Stores source links separately from application links where the API provides both.
+- Runs once daily through GitHub Actions. The Himalayas dataset refreshes daily, so frequent polling is unnecessary.
+- Does not auto-apply. Always open the original listing, confirm the role is still open, verify Indonesia eligibility, and submit applications yourself.
 
-## Enable dashboard
-Repository Settings → Pages → Deploy from a branch → branch `main` → folder `/dashboard` → Save.
+## Data
+- `data/jobs.json`: full records, fit score, difficulty, eligibility notes, Android feasibility, and reasons.
+- `data/jobs.csv`: spreadsheet-friendly export.
+- Scores are a first-pass heuristic, not a guarantee of hiring likelihood. The system does not infer missing salary, experience, country, or device requirements.
 
-## Run collector
-Open Actions → Collect remote jobs → Run workflow. It also runs every 6 hours (best effort).
+## Run manually
+Open Actions → Collect remote jobs → Run workflow.
 
-Dashboard: https://satriamada-web.github.io/ai-freelance-job-hunter/
+## Sources and attribution
+- [We Work Remotely RSS](https://weworkremotely.com/remote-jobs.rss)
+- [Himalayas Remote Jobs API](https://himalayas.app/api). Keep Himalayas attribution visible and use the API's `applicationLink` unchanged when applying. Do not republish these listings to third-party job aggregators, Google Jobs, or LinkedIn Jobs.
 
-Sources: [We Work Remotely RSS](https://weworkremotely.com/remote-jobs.rss), [Remote OK RSS](https://remoteok.com/remote-jobs.rss). Missing salary/location/eligibility fields are left unknown, never guessed.
-
-Requires Python 3.11+ for local testing. Collector uses only the Python standard library. GitHub Actions usage limits apply.
+The optional static dashboard files remain in `dashboard/`, but GitHub Pages is not required for the current workflow. GitHub Actions usage limits apply.
