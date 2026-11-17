@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config/settings.json").read_text(encoding="utf-8"))
-FIELDS = ["id","title","company","location","published","source","url","description","salary","employment_type","eligibility","fit_score","difficulty","android_feasibility","reasons","collected_at"]
+FIELDS = ["id","title","company","location","published","source","url","apply_url","description","salary","employment_type","eligibility","fit_score","difficulty","android_feasibility","reasons","collected_at"]
 
 def clean(s):
     return re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", unescape(str(s or "")))).strip()
@@ -70,7 +70,7 @@ def fetch_himalayas(src):
             salary=""
             if j.get("minSalary") or j.get("maxSalary"):
                 salary=f'{j.get("minSalary") or ""}-{j.get("maxSalary") or ""} {j.get("currency") or ""} / {j.get("salaryPeriod") or "annual"}'
-            out.append({"id":str(j.get("guid") or j.get("id") or j.get("applicationLink") or j.get("title")),"title":clean(j.get("title")),"company":clean(j.get("companyName")),"location":clean(", ".join(restrictions) if restrictions else "Remote; country unrestricted"),"published":date_value(j.get("pubDate")),"source":src["name"],"url":j.get("applicationLink") or j.get("url") or "https://himalayas.app/jobs","description":clean(j.get("description") or j.get("excerpt"))[:5000],"salary":salary,"employment_type":clean(j.get("employmentType")),"eligibility":eligibility,"collected_at":datetime.now(timezone.utc).isoformat()})
+            out.append({"id":str(j.get("guid") or j.get("id") or j.get("applicationLink") or j.get("title")),"title":clean(j.get("title")),"company":clean(j.get("companyName")),"location":clean(", ".join(restrictions) if restrictions else "Remote; country unrestricted"),"published":date_value(j.get("pubDate")),"source":src["name"],"url":("https://himalayas.app/"+str(j.get("guid","")).lstrip("/") if j.get("guid") else (j.get("url") or "https://himalayas.app/jobs")),"apply_url":j.get("applicationLink") or "","description":clean(j.get("description") or j.get("excerpt"))[:5000],"salary":salary,"employment_type":clean(j.get("employmentType")),"eligibility":eligibility,"collected_at":datetime.now(timezone.utc).isoformat()})
         cursor=data.get("nextCursor")
         if not cursor or not jobs: break
     return out
