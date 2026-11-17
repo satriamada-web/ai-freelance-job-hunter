@@ -49,6 +49,9 @@ function render() {
         <p><strong>Kelayakan negara:</strong> ${esc(j.eligibility || "Belum diketahui — cek halaman asli")}</p>
         <p><strong>Perangkat:</strong> ${esc(j.android_feasibility || "Belum diketahui — cek persyaratan")}</p>
         <p><strong>Tingkat awal:</strong> ${esc(j.difficulty || "Belum dinilai")}</p>
+        <p><strong>Status verifikasi:</strong> ${esc(j.verification_status || "Perlu verifikasi manual")}</p>
+        <p><strong>Pemeriksaan risiko:</strong> ${esc(j.risk_level || "Belum diperiksa")}</p>
+        ${Array.isArray(j.risk_flags) && j.risk_flags.length ? '<p><strong>Indikasi:</strong> ' + esc(j.risk_flags.join("; ")) + '</p>' : ""}
       </div>
       ${reasons ? '<ul class="reasons">' + reasons + '</ul>' : ""}
       <p class="meta">Tanggal: ${esc(j.published ? new Date(j.published).toLocaleDateString("id-ID") : "Tidak tersedia")} · Status: <strong>${esc(mark || "Belum ditandai")}</strong></p>
