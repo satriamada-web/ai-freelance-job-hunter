@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "name": "We Work Remotely",
+      "url": "https://weworkremotely.com/remote-jobs.rss"
+    },
+    {
+      "name": "Remote OK",
+      "url": "https://remoteok.com/remote-jobs.rss"
+    }
+  ],
+  "max_jobs": 500,
+  "request_timeout_seconds": 25
+}
